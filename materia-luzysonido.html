@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Materia, Luz y Sonido</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+            position: relative;
+            background: #90EE90;
+            color: #173b1f;
+        }
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background: url("https://image.shutterstock.com/image-vector/biology-hand-drawn-chalk-sketches-260nw-2600893235.jpg");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            z-index: -2;
+        }
+        body::after {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(255,255,255,.75), rgba(144,238,144,.85));
+            z-index: -1;
+            pointer-events: none;
+        }
+        .franja-fondo {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 170px;
+            background: rgba(255, 255, 255, 0.92);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            z-index: -1;
+        }
+        .boton-regreso {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 25px;
+            background: linear-gradient(135deg, #7ed957, #43cea2);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            margin: 10px 0 10px 3%;
+            box-shadow: 0 6px 15px rgba(46,125,50,.25);
+            transition: all .3s ease;
+            position: relative;
+            z-index: 1;
+        }
+        .boton-regreso:hover { transform: translateY(-2px); }
+        .titulo-principal {
+            width: 94%;
+            margin: 0 auto 30px auto;
+            background: linear-gradient(90deg, #00c853, #228B22, #2e7d32);
+            padding: 18px;
+            text-align: center;
+            font-size: clamp(28px, 5vw, 44px);
+            font-weight: bold;
+            font-family: 'Playfair Display', serif;
+            letter-spacing: 2px;
+            color: white;
+            text-shadow: 0 0 8px rgba(255,255,255,0.8), 0 0 15px rgba(255,255,255,0.6);
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0,0,0,.12);
+            position: relative;
+            z-index: 1;
+        }
+        .contenedor-principal {
+            display: flex;
+            gap: 20px;
+            width: 94%;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+            align-items: flex-start;
+        }
+        .columna-izquierda { 
+            width: calc(60% - 10px); 
+            display: flex; 
+            flex-direction: column; 
+            gap: 25px; 
+        }
+        .columna-derecha { 
+            width: calc(40% - 10px); 
+            display: flex; 
+            flex-direction: column; 
+            gap: 15px; 
+            border-left: 3px solid #2e7d32; 
+            padding-left: 20px; 
+        }
+        .tarjeta-seccion {
+            border-radius: 18px;
+            overflow: hidden;
+            background: linear-gradient(135deg, rgba(255,255,255,.95), rgba(230,255,230,.95));
+            border: 2px solid #2e7d32;
+            box-shadow: 0 8px 20px rgba(46,125,50,.14);
+        }
+        .encabezado-tarjeta {
+            background: linear-gradient(90deg, #7ed957, #43cea2);
+            padding: 14px;
+            font-size: 22px;
+            font-weight: bold;
+            text-align: center;
+            color: white;
+            font-family: 'Playfair Display', serif;
+        }
+        .cuerpo-tarjeta { display: flex; min-height: 220px; }
+        .contenido-texto {
+            flex: 2;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 12px;
+        }
+        .contenido-texto > p {
+            color: #2f4f2f;
+            font-weight: 500;
+            line-height: 1.6;
+            font-size: 18px;
+        }
+        .contenido-imagen {
+            flex: 1;
+            border-left: 3px solid #2e7d32;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(223,255,226,.6);
+            padding: 12px;
+            font-size: 50px;
+        }
+        .caja-video {
+            background: linear-gradient(135deg, rgba(255,255,255,.95), rgba(230,255,230,.95));
+            border: 2px solid #2e7d32;
+            border-radius: 18px;
+            padding: 15px;
+            box-shadow: 0 8px 20px rgba(46,125,50,.14);
+            text-align: center;
+            width: 100%;
+        }
+        .caja-video h4 {
+            font-family: 'Playfair Display', serif;
+            color: #2e7d32;
+            margin-bottom: 12px;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .caja-video video {
+            width: 100%;
+            max-width: 320px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .flip-card {
+            background: transparent;
+            width: 100%;
+            height: 140px;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+        .flip-card.grande { height: 180px; }
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform .8s;
+            transform-style: preserve-3d;
+        }
+        .flip-card:hover .flip-card-inner,
+        .flip-card.activa .flip-card-inner { transform: rotateY(180deg); }
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            inset: 0;
+            border-radius: 14px;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 12px 15px;
+            font-weight: 700;
+            box-shadow: 0 8px 20px rgba(46,125,50,.14);
+        }
+        .flip-card-front {
+            background: linear-gradient(135deg, #fafffa, #dfffe2);
+            color: #2e7d32;
+            border: 1px solid #c8f7c5;
+            font-size: 20px;
+            line-height: 1.4;
+        }
+        .flip-card-back {
+            background: linear-gradient(135deg, #c8f7c5, #b2f0b2);
+            color: #000000;
+            transform: rotateY(180deg);
+            font-size: 15px;
+            line-height: 1.6;
+            padding: 15px;
+            border: 1px solid #a5e9a5;
+        }
+        .area-dibujo {
+            border-radius: 18px;
+            padding: 30px 25px;
+            min-height: 120px;
+            position: relative;
+            background: linear-gradient(135deg, rgba(255,255,255,.95), rgba(230,255,230,.95));
+            border: 2px solid #2e7d32;
+            box-shadow: 0 8px 20px rgba(46,125,50,.14);
+            text-align: center;
+            margin-top: 25px;
+            width: 100%;
+        }
+        .area-dibujo h4 {
+            background: linear-gradient(90deg, #7ed957, #43cea2);
+            color: white;
+            padding: 8px 25px;
+            border-radius: 20px;
+            font-size: 18px;
+            font-family: 'Playfair Display', serif;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+        .area-dibujo p {
+            color: #2f4f2f;
+            line-height: 1.8;
+            font-size: 17px;
+        }
+        .item-menu {
+            padding: 14px 16px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #fafffa, #dfffe2);
+            border: 1px solid #c8f7c5;
+            box-shadow: 0 4px 12px rgba(46,125,50,.10);
+            transition: all .3s ease;
+        }
+        .item-menu h5 {
+            color: #2e7d32;
+            font-size: 16px;
+            margin-bottom: 6px;
+            font-weight: 700;
+            text-align: center;
+        }
+        .item-menu p {
+            color: #2f4f2f;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        .item-menu:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(46,125,50,.15);
+        }
+        .boton-jugar {
+            background: linear-gradient(135deg, #7ed957, #43cea2);
+            padding: 16px;
+            border-radius: 50px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 17px;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(46,125,50,.30);
+            transition: all .3s ease;
+            margin-top: 5px;
+            text-decoration: none;
+            display: block;
+        }
+        .boton-jugar:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(46,125,50,.40);
+        }
+        @media (max-width: 900px) {
+            .contenedor-principal { flex-direction: column; width: 94%; margin: 0 auto; }
+            .columna-izquierda,
+            .columna-derecha { width: 100%; }
+            .columna-derecha { border-left: none; padding-left: 0; border-top: 3px solid #2e7d32; padding-top: 20px; }
+            .cuerpo-tarjeta { flex-direction: column; min-height: auto; }
+            .contenido-imagen { border-left: none; border-top: 3px solid #2e7d32; min-height: 120px; }
+            .flip-card.grande { height: 200px; }
+            .caja-video video { max-width: 280px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="franja-fondo"></div>
+    <a href="index.html" class="boton-regreso"><i class="fas fa-arrow-left"></i> Volver al Inicio</a>
+    
+    <h1 class="titulo-principal">💡 MATERIA, LUZ Y SONIDO 🔊</h1>
+    
+    <div class="contenedor-principal">
+        <div class="columna-izquierda">
+            <!-- 📌 ¿Qué es la Materia? -->
+            <div class="tarjeta-seccion">
+                <div class="encabezado-tarjeta">📌 ¿Qué es la Materia?</div>
+                <div class="cuerpo-tarjeta">
+                    <div class="contenido-texto">
+                        <p>• Todo lo que ocupa lugar + Estados + Dato Curioso</p>
+                        <div class="flip-card">
+                            <div class="flip-card-inner">
+                                <div class="flip-card-front">✨ Pasa el cursor o haz clic aquí ✨</div>
+                                <div class="flip-card-back">
+                                    Es todo lo que tiene <strong>masa</strong> y ocupa un <strong>lugar en el espacio</strong>. Se presenta en tres estados: sólido, líquido y gaseoso. ⚛️ ¡Está formada por átomos invisibles a simple vista!
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="contenido-imagen">⚛️</div>
+                </div>
+            </div>
+            <!-- 💡 La Luz -->
+            <div class="tarjeta-seccion">
+                <div class="encabezado-tarjeta">💡 La Luz</div>
+                <div class="cuerpo-tarjeta">
+                    <div class="contenido-texto">
+                        <p>• Fuentes, propiedades y comportamiento</p>
+                        <div class="flip-card grande">
+                            <div class="flip-card-inner">
+                                <div class="flip-card-front">✨ Descubre sus características ✨</div>
+                                <div class="flip-card-back">
+                                    Es una forma de <strong>energía</strong> que viaja en línea recta y a gran velocidad. Puede ser natural (Sol) o artificial (foco). Se refleja, se refracta y nos permite ver los colores. ⚡ Es la energía más rápida del universo.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="contenido-imagen">💡</div>
+                </div>
+            </div>
+            <!-- 🔊 El Sonido -->
+            <div class="tarjeta-seccion">
+                <div class="encabezado-tarjeta">🔊 El Sonido</div>
+                <div class="cuerpo-tarjeta">
+                    <div class="contenido-texto">
+                        <p>• ¿Cómo se produce y viaja?</p>
+                        <div class="flip-card grande">
+                            <div class="flip-card-inner">
+                                <div class="flip-card-front">✨ Conoce cómo funciona ✨</div>
+                                <div class="flip-card-back">
+                                    Se produce por <strong>vibraciones</strong> que necesitan un medio material para viajar (aire, agua, sólidos). No se propaga en el vacío. Tiene tono, volumen y timbre. 🎵 Viaja mucho más lento que la luz.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="contenido-imagen">🔊</div>
+                </div>
+            </div>
+            <!-- 🖍️ RESUMEN -->
+            <div class="area-dibujo">
+                <h4>📝 Resumen y Esquema</h4>
+                <p><strong>Tres formas fundamentales de la naturaleza:</strong><br><br>
+                ✅ <strong>Materia:</strong> tiene masa y volumen. Estados: sólido, líquido y gaseoso.<br>
+                ✅ <strong>Luz:</strong> energía luminosa, viaja en línea recta y a gran velocidad.<br>
+                ✅ <strong>Sonido:</strong> energía por vibraciones, necesita un medio para propagarse.</p>
+            </div>
+        </div>
+        <div class="columna-derecha">
+            <div class="item-menu">
+                <h5>⚛️ ¿Qué es la Materia?</h5>
+                <p>Todo lo que tiene masa y ocupa un lugar. Se divide en sólido, líquido y gas.</p>
+            </div>
+            <div class="item-menu">
+                <h5>🌊 Estados de la Materia</h5>
+                <p>Sólido: forma fija. Líquido: toma la forma del recipiente. Gaseoso: se expande.</p>
+            </div>
+            <div class="item-menu">
+                <h5>☀️ La Luz</h5>
+                <p>Se propaga en línea recta. Se refleja y se refracta. No necesita medio material.</p>
+            </div>
+            <div class="item-menu">
+                <h5>🎵 El Sonido</h5>
+                <p>Se transmite por vibraciones. Viaja más rápido en sólidos que en el aire. No existe en el vacío.</p>
+            </div>
+            <div class="item-menu">
+                <h5>⚖️ Luz vs Sonido</h5>
+                <p>La luz es mucho más rápida. La luz no necesita medio; el sonido sí. La luz viaja por el vacío.</p>
+            </div>
+            <div class="item-menu">
+                <h5>💡 ¿Sabías que...?</h5>
+                <p>Cuando ves un relámpago y luego escuchas el trueno, la diferencia de tiempo muestra que la luz es mucho más rápida.</p>
+            </div>
+            <!-- 🎬 VIDEO - MISMO FORMATO QUE LAS OTRAS PÁGINAS -->
+            <div class="caja-video">
+                <h4><i class="fas fa-film"></i> Video explicativo</h4>
+                <video src="video-materia.mp4" controls preload="metadata">
+                    Tu navegador no puede reproducir este video.
+                </video>
+            </div>
+            <!-- 🎮 BOTÓN ENLAZADO AL JUEGO DE MATERIA Y ENERGÍA -->
+            <a href="https://wayground.com/activity/admin/quiz/604d6419c404e7001b60b08d/la-materia-y-la-energia?page=search-result-page&source=search-result-page&referrer=/admin/search/all/materia%20luz%20y%20sonido" target="_blank" rel="noopener" class="boton-jugar">
+                🎮 ¡Juega y Aprende!
+            </a>
+        </div>
+    </div>
+<script>
+const tarjetas = document.querySelectorAll('.flip-card');
+tarjetas.forEach(function(tarjeta) {
+    tarjeta.addEventListener('click', function() {
+        this.classList.toggle('activa');
+    });
+});
+</script>
+</body>
+</html>
